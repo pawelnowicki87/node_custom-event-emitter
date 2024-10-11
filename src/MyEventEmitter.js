@@ -6,10 +6,14 @@ class MyEventEmitter {
     this.events = {};
   }
 
-  on(eventName, listener) {
+  checkEventName = (eventName) => {
     if (!this.events[eventName]) {
       this.events[eventName] = [];
     }
+  };
+
+  on(eventName, listener) {
+    this.checkEventName(eventName);
     this.events[eventName].push(listener);
   }
 
@@ -23,29 +27,19 @@ class MyEventEmitter {
   }
 
   off(eventName, listener) {
-    if (!this.events[eventName]) {
-      return;
-    }
-
     this.events[eventName] = this.events[eventName].filter(
       (registeredListener) => registeredListener !== listener,
     );
   }
 
   emit(eventName, ...args) {
-    if (!this.events[eventName]) {
-      return;
-    }
-
     this.events[eventName].forEach((listener) => {
       listener(...args);
     });
   }
 
   prependListener(eventName, listener) {
-    if (!this.events[eventName]) {
-      this.events[eventName] = [];
-    }
+    this.checkEventName(eventName);
     this.events[eventName].unshift(listener);
   }
 
