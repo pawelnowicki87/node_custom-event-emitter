@@ -27,15 +27,19 @@ class MyEventEmitter {
   }
 
   off(eventName, listener) {
-    this.events[eventName] = this.events[eventName].filter(
-      (registeredListener) => registeredListener !== listener,
-    );
+    if (this.events[eventName]) {
+      this.events[eventName] = this.events[eventName].filter(
+        (registeredListener) => registeredListener !== listener,
+      );
+    }
   }
 
   emit(eventName, ...args) {
-    this.events[eventName].forEach((listener) => {
-      listener(...args);
-    });
+    if (this.events[eventName]) {
+      this.events[eventName].forEach((listener) => {
+        listener(...args);
+      });
+    }
   }
 
   prependListener(eventName, listener) {
